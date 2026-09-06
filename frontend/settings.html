@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>ETIAS API HUB Settings</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet" href="style.css">
+
+
+<style>
+
+body{
+
+display:block;
+padding:30px;
+
+}
+
+
+
+.container{
+
+max-width:600px;
+
+margin:auto;
+
+}
+
+
+
+.logo{
+
+font-size:32px;
+
+font-weight:bold;
+
+color:#00eaff;
+
+text-align:center;
+
+margin-bottom:30px;
+
+}
+
+
+
+.card{
+
+background:#0b1328;
+
+padding:30px;
+
+border-radius:20px;
+
+margin-bottom:25px;
+
+box-shadow:
+0 0 25px #00eaff33;
+
+}
+
+
+
+input{
+
+width:100%;
+
+padding:15px;
+
+margin:10px 0;
+
+background:#050816;
+
+color:white;
+
+border:1px solid #00eaff55;
+
+border-radius:10px;
+
+}
+
+
+
+button{
+
+width:100%;
+
+padding:15px;
+
+border:none;
+
+border-radius:30px;
+
+background:#00eaff;
+
+font-weight:bold;
+
+cursor:pointer;
+
+margin-top:10px;
+
+}
+
+
+
+.danger{
+
+background:#ff3366;
+
+color:white;
+
+}
+
+
+
+.key{
+
+background:#050816;
+
+padding:15px;
+
+border-radius:10px;
+
+word-break:break-all;
+
+}
+
+
+
+</style>
+
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+<div class="logo">
+
+ETIAS API HUB
+
+</div>
+
+
+
+
+
+<div class="card">
+
+
+<h2>
+Profile
+</h2>
+
+
+<p id="email">
+
+Loading...
+
+</p>
+
+
+<input id="name" placeholder="Name">
+
+
+<button onclick="updateName()">
+
+Save Name
+
+</button>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<div class="card">
+
+
+<h2>
+API Key Management
+</h2>
+
+
+<div class="key" id="apiKey">
+
+Loading...
+
+</div>
+
+
+
+<button onclick="regenerateKey()">
+
+Regenerate API Key
+
+</button>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<div class="card">
+
+
+<h2>
+Change Password
+</h2>
+
+
+
+<input
+
+id="password"
+
+type="password"
+
+placeholder="New password"
+
+
+
+>
+
+
+<button onclick="changePassword()">
+
+Update Password
+
+</button>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<div class="card">
+
+
+<h2>
+Danger Zone
+</h2>
+
+
+
+<button class="danger" onclick="deleteAccount()">
+
+Delete Account
+
+</button>
+
+
+
+</div>
+
+
+
+
+
+<p id="msg"></p>
+
+
+<a href="dashboard.html">
+
+← Back Dashboard
+
+</a>
+
+
+</div>
+
+
+
+
+
+
+
+<script>
+
+
+const API =
+"http://localhost:5000";
+
+
+const token =
+localStorage.getItem("token");
+
+
+
+if(!token){
+
+window.location="login.html";
+
+}
+
+
+
+
+
+
+
+async function loadProfile(){
+
+
+
+const res =
+await fetch(
+
+API+"/users/profile",
+
+{
+
+headers:{
+
+Authorization:
+
+"Bearer "+token
+
+}
+
+}
+
+);
+
+
+
+const data =
+await res.json();
+
+
+
+const user =
+data.user;
+
+
+
+document.getElementById("email")
+.innerHTML =
+user.email;
+
+
+
+document.getElementById("name")
+.value =
+user.name;
+
+
+
+document.getElementById("apiKey")
+.innerHTML =
+user.apiKey;
+
+
+
+}
+
+
+
+async function updateName(){
+
+
+
+await fetch(
+
+API+"/users/profile",
+
+{
+
+method:"PUT",
+
+headers:{
+
+Authorization:
+"Bearer "+token,
+
+"Content-Type":"application/json"
+
+},
+
+body:JSON.stringify({
+
+name:
+
+document.getElementById("name").value
+
+})
+
+}
+
+);
+
+
+
+msg("Name updated");
+
+}
+
+
+
+async function regenerateKey(){
+
+
+
+const res =
+await fetch(
+
+API+"/users/regenerate-key",
+
+{
+
+method:"POST",
+
+headers:{
+
+Authorization:
+"Bearer "+token
+
+}
+
+}
+
+);
+
+
+
+const data =
+await res.json();
+
+
+
+document.getElementById("apiKey")
+.innerHTML =
+data.apiKey;
+
+
+localStorage.setItem(
+"apiKey",
+data.apiKey
+);
+
+
+}
+
+
+
+
+async function changePassword(){
+
+
+
+await fetch(
+
+API+"/users/change-password",
+
+{
+
+method:"POST",
+
+headers:{
+
+Authorization:
+"Bearer "+token,
+
+"Content-Type":"application/json"
+
+},
+
+body:JSON.stringify({
+
+password:
+
+document.getElementById("password").value
+
+})
+
+}
+
+);
+
+
+
+msg("Password updated");
+
+}
+
+
+
+
+async function deleteAccount(){
+
+
+if(!confirm(
+"Delete your account permanently?"
+)) return;
+
+
+
+await fetch(
+
+API+"/users/delete",
+
+{
+
+method:"DELETE",
+
+headers:{
+
+Authorization:
+"Bearer "+token
+
+}
+
+}
+
+);
+
+
+
+localStorage.clear();
+
+
+window.location="register.html";
+
+
+}
+
+
+
+
+
+
+
+function msg(text){
+
+document.getElementById("msg")
+.innerHTML=text;
+
+}
+
+
+
+loadProfile();
+
+
+
+</script>
+
+
+
+</body>
+
+</html>

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Login - ETIAS</title>
+  <style>
+    body { font-family: Arial; background: #020210; color: #fff; display: flex; justify-content: center; align-items: center; height: 100vh; }
+    .login-box { background: #111; padding: 30px; border-radius: 12px; width: 350px; border: 1px solid #00c3ff; box-shadow: 0 0 25px rgba(0,195,255,0.2); }
+    .login-box h2 { text-align: center; color: #00c3ff; margin-bottom: 10px; }
+    .login-box input { width: 100%; padding: 12px; margin: 10px 0; border-radius: 8px; border: none; background: #222; color: #fff; outline: none; }
+    .login-box input:focus { border: 1px solid #00c3ff; box-shadow: 0 0 10px rgba(0,195,255,0.5); }
+    .login-box button { 
+      width: 100%; 
+      padding: 12px; 
+      background: #00c3ff; 
+      border: none; 
+      border-radius: 8px; 
+      color: #020210; 
+      font-weight: bold; 
+      cursor: pointer; 
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: 0.3s;
+    }
+    .login-box button:disabled { background: #555; cursor: not-allowed; }
+    .error { color: #ff3366; text-align: center; margin-top: 10px; font-size: 14px; }
+
+    /* SPINNER */
+    .spinner {
+      border: 3px solid rgba(2,2,16,0.3);
+      border-top: 3px solid #020210;
+      border-radius: 50%;
+      width: 18px;
+      height: 18px;
+      animation: spin 1s linear infinite;
+      display: none;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <div class="login-box">
+    <img src="/logo.png" alt="ETIAS Logo" width="40" style="display:block; margin:0 auto 10px;">
+    <h2>ETIAS Admin Login</h2>
+    
+    <input type="email" id="email" placeholder="Admin Email" required>
+    <input type="password" id="password" placeholder="Admin Password" required>
+    
+    <hr style="margin:15px 0; border-color:#333;">
+    <p style="font-size:12px; color:#aaa;">Master Admin Key</p>
+    <input type="text" id="adminUser" placeholder="Admin Username" required>
+    <input type="password" id="adminPass" placeholder="Admin Master Password" required>
+    
+    <button id="loginBtn" onclick="adminLogin()">
+      <div class="spinner" id="spinner"></div>
+      <span id="btnText">Login to Panel</span>
+    </button>
+    <p id="error" class="error"></p>
+  </div>
+
+  <script>
+    async function adminLogin() {
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      const adminUser = document.getElementById('adminUser').value;
+      const adminPass = document.getElementById('adminPass').value;
+      const errorEl = document.getElementById('error');
+      const btn = document.getElementById('loginBtn');
+      const spinner = document.getElementById('spinner');
+      const btnText = document.getElementById('btnText');
+
+      errorEl.innerText = "";
+
+      // Show spinner
+      btn.disabled = true;
+      spinner.style.display = "inline-block";
+      btnText.innerText = "Logging in...";
+
+      try {
+        // 1. Normal login to get JWT token
+        const res = await fetch('/users/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password })
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || "Login failed");
+
+        // 2. Test if this user is admin + master key is correct
+        const testAdmin = await fetch('/admin/stats', {
+          method: 'GET',
+          headers: { 
+            'Authorization': `Bearer ${data.token}`,
+            'x-admin-user': adminUser,
+            'x-admin-pass': adminPass
+          }
+        });
+
+        if (!testAdmin.ok) throw new Error("Invalid Admin Master Key or Not Admin");
+
+        // 3. Save everything to localStorage
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('adminUser', adminUser);
+        localStorage.setItem('adminPass', adminPass);
+
+        // 4. Go to admin panel
+        btnText.innerText = "Success! Redirecting...";
+        setTimeout(() => {
+          window.location.href = '/admin.html';
+        }, 500);
+
+      } catch (err) {
+        errorEl.innerText = err.message;
+        // Hide spinner on error
+        btn.disabled = false;
+        spinner.style.display = "none";
+        btnText.innerText = "Login to Panel";
+      }
+    }
+    
+    // Allow Enter key to submit
+    document.addEventListener('keypress', function(e) {
+      if(e.key === 'Enter') adminLogin();
+    });
+  </script>
+</body>
+</html>

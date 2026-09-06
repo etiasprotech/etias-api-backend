@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>ETIAS API HUB Payment</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="UTF-8">
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&display=swap');
+
+* {
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    background:#020210;
+    color:#e0f7ff;
+    font-family:'Poppins', sans-serif;
+    padding:30px;
+    padding-bottom: 100px;
+    background-image:
+        linear-gradient(rgba(0, 195, 255, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 195, 255, 0.05) 1px, transparent 1px);
+    background-size: 40px 40px;
+    animation: gridMove 30s linear infinite;
+}
+
+@keyframes gridMove {
+    0% { background-position: 0 0; }
+    100% { background-position: 40px 40px; }
+}
+
+.container{
+    max-width:600px;
+    margin:auto;
+}
+
+/* Logo */
+.logo{
+    font-family: 'Orbitron', sans-serif;
+    font-size:35px;
+    font-weight:700;
+    background: linear-gradient(90deg, #00c3ff, #0077ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow:0 0 20px rgba(0, 195, 255, 0.5);
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+/* Glass Cards */
+.card{
+    background: rgba(15, 23, 42, 0.4);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    padding:25px;
+    border-radius:20px;
+    margin-top:25px;
+    border: 1px solid rgba(0, 195, 255, 0.2);
+    box-shadow:0 0 20px rgba(0, 195, 255, 0.15);
+}
+
+h2{
+    color:#00c3ff;
+    font-family: 'Orbitron', sans-serif;
+    margin-bottom: 15px;
+}
+
+/* Inputs */
+input,select{
+    width:100%;
+    padding:15px;
+    margin:10px 0;
+    background: rgba(5, 8, 22, 0.6);
+    color:white;
+    border:1px solid rgba(0, 195, 255, 0.4);
+    border-radius:10px;
+    outline: none;
+    transition: 0.3s;
+    backdrop-filter: blur(5px);
+}
+input:focus {
+    border:1px solid #00c3ff;
+    box-shadow: 0 0 15px rgba(0, 195, 255, 0.5);
+}
+input[type="file"] {
+    padding: 10px;
+}
+
+/* Button */
+button{
+    background: linear-gradient(90deg, #00c3ff, #0077ff);
+    border:0;
+    padding:15px 30px;
+    border-radius:12px;
+    font-weight:600;
+    cursor:pointer;
+    color: #fff;
+    font-family: 'Orbitron', sans-serif;
+    letter-spacing: 1px;
+    box-shadow: 0 0 15px rgba(0, 195, 255, 0.4);
+    transition: 0.3s;
+    width: 100%;
+    margin-top: 10px;
+}
+button:hover{
+    transform: translateY(-2px);
+    box-shadow: 0 0 25px rgba(0, 195, 255, 0.7);
+}
+
+.price{
+    font-size:40px;
+    font-weight: 700;
+    background: linear-gradient(90deg, #00ff99, #00c3ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.note{
+    background: rgba(0, 0, 0, 0.4);
+    padding:15px;
+    border-radius:15px;
+    border-left: 3px solid #00c3ff;
+    line-height: 1.8;
+}
+
+#message {
+    margin-top: 15px;
+    text-align: center;
+    color: #00ff99;
+}
+
+/* Footer Nav */
+footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(5, 8, 22, 0.7);
+    backdrop-filter: blur(15px);
+    border-top: 1px solid rgba(0, 195, 255, 0.3);
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    padding: 15px;
+    z-index: 100;
+}
+
+.nav-btn {
+    background: transparent;
+    border: 1px solid rgba(0, 195, 255, 0.4);
+    color: #00c3ff;
+    padding: 10px 20px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: 0.3s;
+    font-family: 'Poppins', sans-serif;
+}
+
+.nav-btn:hover {
+    background: rgba(0, 195, 255, 0.1);
+    box-shadow: 0 0 15px rgba(0, 195, 255, 0.4);
+    color: #fff;
+}
+
+.footer-text {
+    position: absolute;
+    right: 30px;
+    font-size: 12px;
+    color: rgba(160, 216, 255, 0.6);
+    align-self: center;
+}
+
+@media(max-width: 768px) {
+   .footer-text { display: none; }
+    footer { gap: 10px; }
+   .nav-btn { padding: 8px 12px; font-size: 14px; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="logo">ETIAS PAYMENT PAGE</div>
+
+    <div class="card">
+        <h2>EcoCash Upgrade</h2>
+        <p>Selected Plan: <b id="plan"></b></p>
+        <p class="price">$<span id="amount"></span><span style="font-size:16px;color:#a0d8ff">/month</span></p>
+    </div>
+
+    <div class="card">
+        <h2>Payment Instructions</h2>
+        <div class="note">
+            Send payment through EcoCash: <br><br>
+            Merchant Number: <b>077 129 2748</b> <br><br>
+            Merchant Name: <b>ZVIKOMBORERO MUTSARU</b> <br><br>
+            After payment upload your proof below. <br><br>
+            Wait for Approval in less than 24hrs.
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>Submit Payment</h2>
+        <input id="phone" placeholder="EcoCash Phone Number">
+        <input id="transaction" placeholder="Transaction ID">
+        <input id="proof" type="file" accept="image/*">
+        <button onclick="submitPayment()">Submit Payment</button>
+        <p id="message"></p>
+    </div>
+
+</div>
+
+<!-- FOOTER NAV -->
+<footer>
+    <a href="dashboard.html" class="nav-btn">Dashboard</a>
+    <a href="pricing.html" class="nav-btn">Pricing</a>
+    <a href="docs.html" class="nav-btn">Docs</a>
+    <span class="footer-text">Powered By ETIAS TECH | ©️ 2026</span>
+</footer>
+
+<script>
+const API_URL = "http://localhost:5000";
+const token = localStorage.getItem("token");
+const selectedPlan = localStorage.getItem("selectedPlan") || "developer";
+
+const prices = {
+    developer: 5,
+    pro: 15,
+    enterprise: 20 // FIXED: was 50, now matches pricing.html
+};
+
+document.getElementById("plan").innerHTML = selectedPlan.toUpperCase();
+document.getElementById("amount").innerHTML = prices[selectedPlan];
+
+async function submitPayment(){
+    const messageEl = document.getElementById("message");
+    messageEl.innerHTML = "Uploading...";
+
+    const form = new FormData();
+    form.append("plan", selectedPlan);
+    form.append("amount", prices[selectedPlan]);
+    form.append("ecocashNumber", document.getElementById("phone").value);
+    form.append("payerPhone", document.getElementById("phone").value);
+    form.append("transactionId", document.getElementById("transaction").value);
+    form.append("proof", document.getElementById("proof").files[0]);
+
+    try {
+        const res = await fetch(API_URL+"/payments/submit", {
+            method:"POST",
+            headers:{
+                Authorization: "Bearer "+token
+            },
+            body:form
+        });
+
+        const data = await res.json();
+        messageEl.innerHTML = data.message || data.error;
+        messageEl.style.color = data.message? "#00ff99" : "#ff4d6d";
+    } catch(err) {
+        messageEl.innerHTML = "Network error. Try again.";
+        messageEl.style.color = "#ff4d6d";
+    }
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>ETIAS Register</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="UTF-8">
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #020210;
+    font-family: 'Poppins', sans-serif;
+    color: #fff;
+    min-height: 100vh;
+    display: flex;              /* key change */
+    flex-direction: column;     /* stack logo + container + footer */
+    justify-content: center;    /* centers container vertically */
+    align-items: center;        /* centers container horizontally */
+    padding: 30px 0;            /* padding top/bottom */
+    background-image: 
+        linear-gradient(rgba(0, 195, 255, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 195, 255, 0.05) 1px, transparent 1px);
+    background-size: 40px 40px;
+    animation: gridMove 30s linear infinite;
+}
+
+@keyframes gridMove {
+    0% { background-position: 0 0; }
+    100% { background-position: 40px 40px; }
+}
+
+/* Logo at normal position, not floating */
+.logo{
+    font-family: 'Orbitron', sans-serif;
+    font-size:32px;
+    font-weight:700;
+    background: linear-gradient(90deg, #00c3ff, #0077ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow:0 0 20px rgba(0, 195, 255, 0.5);
+    text-align: center;
+    margin-bottom: 25px;
+    /* REMOVED float animation */
+}
+
+/* Glass container - perfectly centered */
+.container{
+    width: 380px;
+    padding: 40px 30px;
+    border-radius: 20px;
+    text-align: center;
+    background: rgba(15, 23, 42, 0.3);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(0, 195, 255, 0.3);
+    box-shadow: 0 0 20px rgba(0, 195, 255, 0.2);
+    animation: glowPulse 3s ease-in-out infinite;
+}
+
+@keyframes glowPulse {
+    0%, 100% { box-shadow: 0 0 20px rgba(0, 195, 255, 0.2); }
+    50% { box-shadow: 0 0 30px rgba(0, 195, 255, 0.4); }
+}
+
+h2{
+    margin-bottom: 25px;
+    font-weight: 400;
+    color: #a0d8ff;
+    font-family: 'Orbitron', sans-serif;
+}
+
+/* Glass inputs */
+input{
+    width: 100%;
+    padding: 14px 16px;
+    margin: 12px 0;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(0, 195, 255, 0.3);
+    border-radius: 10px;
+    color: #fff;
+    font-size: 15px;
+    outline: none;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(5px);
+}
+
+input::placeholder{
+    color: rgba(160, 216, 255, 0.6);
+}
+
+input:focus{
+    border: 1px solid #00c3ff;
+    box-shadow: 0 0 15px rgba(0, 195, 255, 0.5);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+/* Glowing button + Spinner */
+button{
+    width: 100%;
+    padding: 14px;
+    margin-top: 15px;
+    background: linear-gradient(90deg, #00c3ff, #0077ff);
+    border: none;
+    border-radius: 10px;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 15px rgba(0, 195, 255, 0.4);
+    font-family: 'Orbitron', sans-serif;
+    letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+button:hover:not(:disabled){
+    transform: translateY(-2px);
+    box-shadow: 0 0 25px rgba(0, 195, 255, 0.7);
+}
+
+button:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.spinner {
+    width: 18px;
+    height: 18px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top: 2px solid #fff;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    display: none;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.message{
+    margin-top: 15px;
+    color: #ff4d6d;
+    font-size: 14px;
+    min-height: 20px;
+}
+
+a{
+    color: #00c3ff;
+    text-decoration: none;
+    transition: 0.3s;
+}
+a:hover{
+    text-shadow: 0 0 8px #00c3ff;
+}
+
+/* Footer - MOVING, NOT FIXED */
+footer {
+    width: 100%;
+    text-align: center;
+    padding: 20px;
+    margin-top: auto; /* pushes it to bottom */
+    background: rgba(5, 8, 22, 0.5);
+    backdrop-filter: blur(10px);
+    border-top: 1px solid rgba(0, 195, 255, 0.2);
+    font-size: 14px;
+    color: rgba(160, 216, 255, 0.8);
+    animation: fadeGlow 3s ease-in-out infinite;
+}
+
+@keyframes fadeGlow {
+    0%, 100% { text-shadow: 0 0 5px rgba(0, 195, 255, 0.3); }
+    50% { text-shadow: 0 0 15px rgba(0, 195, 255, 0.6); }
+}
+</style>
+</head>
+
+<body>
+
+<div class="logo">ETIAS API HUB</div>
+
+<div class="container">
+    <h2>Create Account</h2>
+
+    <input id="name" placeholder="Full Name">
+    <input id="email" type="email" placeholder="Email">
+    <input id="password" type="password" placeholder="Password">
+
+    <button type="button" onclick="register()" id="registerBtn">
+        <div class="spinner" id="spinner"></div>
+        <span id="btnText">Create Account</span>
+    </button>
+
+    <div class="message" id="msg"></div>
+
+    <p>Already have account? <a href="index.html">Login</a></p>
+</div>
+
+<!-- FOOTER - SIMPLE TEXT -->
+<footer>
+    Powered By ETIAS TECH ©️ 2026
+</footer>
+
+<script>
+async function register(){
+    const btn = document.getElementById("registerBtn");
+    const spinner = document.getElementById("spinner");
+    const btnText = document.getElementById("btnText");
+    const msg = document.getElementById("msg");
+
+    // Show loading
+    btn.disabled = true;
+    spinner.style.display = "block";
+    btnText.innerText = "CREATING...";
+    msg.innerHTML = "";
+
+    console.log("Register clicked");
+
+    try {
+        const res = await fetch("http://localhost:5000/users/register", {
+            method:"POST",
+            headers:{
+                "Content-Type":"application/json"
+            },
+            body:JSON.stringify({
+                name: document.getElementById("name").value,
+                email: document.getElementById("email").value,
+                password: document.getElementById("password").value
+            })
+        });
+
+        const data = await res.json();
+        console.log("Backend response:", data);
+
+        if(data.token){
+            localStorage.setItem("token", data.token);
+            localStorage.setItem("apiKey", data.apiKey || "");
+            console.log("Going dashboard");
+            window.location.href="./dashboard.html";
+        } else {
+            console.log("No token received");
+            msg.innerHTML = data.error || "Registration failed";
+        }
+    } catch(err) {
+        msg.innerHTML = "Server error. Try again.";
+    } finally {
+        // Hide loading
+        btn.disabled = false;
+        spinner.style.display = "none";
+        btnText.innerText = "Create Account";
+    }
+}
+
+// Submit on Enter key
+document.addEventListener("keypress", function(e) {
+    if (e.key === "Enter") register();
+});
+</script>
+
+</body>
+</html>

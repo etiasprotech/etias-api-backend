@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ETIAS Login</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #020210;
+    font-family: 'Poppins', sans-serif;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    overflow: hidden;
+    position: relative;
+}
+
+/* Animated dark background with grid */
+.bg-animation {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        linear-gradient(rgba(0, 195, 255, 0.1) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 195, 255, 0.1) 1px, transparent 1px);
+    background-size: 50px 50px;
+    animation: gridMove 20s linear infinite;
+    z-index: -1;
+}
+
+@keyframes gridMove {
+    0% { transform: translate(0, 0); }
+    100% { transform: translate(50px, 50px); }
+}
+
+/* Real Logo OUTSIDE container */
+.logo-wrapper {
+    text-align: center;
+    margin-bottom: 30px;
+    z-index: 10;
+    animation: float 3s ease-in-out infinite;
+}
+
+.logo-wrapper img {
+    width: 120px;
+    height: auto;
+    filter: drop-shadow(0 0 15px rgba(0, 195, 255, 0.7));
+}
+
+.logo-wrapper .logo-text {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 24px;
+    font-weight: 700;
+    background: linear-gradient(90deg, #00c3ff, #0077ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: 2px;
+    margin-top: 8px;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-8px); }
+}
+
+/* Glass container */
+.container {
+    width: 380px;
+    padding: 40px 30px;
+    border-radius: 20px;
+    text-align: center;
+    z-index: 10;
+    background: rgba(15, 23, 42, 0.3);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(0, 195, 255, 0.3);
+    box-shadow: 
+        0 0 20px rgba(0, 195, 255, 0.2),
+        0 0 40px rgba(0, 195, 255, 0.1);
+    animation: glowPulse 3s ease-in-out infinite;
+}
+
+@keyframes glowPulse {
+    0%, 100% { box-shadow: 0 0 20px rgba(0, 195, 255, 0.2), 0 0 40px rgba(0, 195, 255, 0.1); }
+    50% { box-shadow: 0 0 30px rgba(0, 195, 255, 0.4), 0 0 60px rgba(0, 195, 255, 0.2); }
+}
+
+h2 {
+    margin-bottom: 25px;
+    font-weight: 400;
+    color: #a0d8ff;
+}
+
+/* Glass inputs */
+.glass-input {
+    width: 100%;
+    padding: 14px 16px;
+    margin: 12px 0;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(0, 195, 255, 0.3);
+    border-radius: 10px;
+    color: #fff;
+    font-size: 15px;
+    outline: none;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(5px);
+}
+
+.glass-input::placeholder {
+    color: rgba(160, 216, 255, 0.6);
+}
+
+.glass-input:focus {
+    border: 1px solid #00c3ff;
+    box-shadow: 0 0 15px rgba(0, 195, 255, 0.5);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+/* Glowing button + Spinner */
+.glow-btn {
+    width: 100%;
+    padding: 14px;
+    margin-top: 15px;
+    background: linear-gradient(90deg, #00c3ff, #0077ff);
+    border: none;
+    border-radius: 10px;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 15px rgba(0, 195, 255, 0.4);
+    font-family: 'Orbitron', sans-serif;
+    letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.glow-btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 0 25px rgba(0, 195, 255, 0.7);
+}
+
+.glow-btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+/* Spinner */
+.spinner {
+    width: 18px;
+    height: 18px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top: 2px solid #fff;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    display: none;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.message {
+    margin-top: 15px;
+    color: #ff4d6d;
+    font-size: 14px;
+    min-height: 20px;
+}
+
+a {
+    color: #00c3ff;
+    text-decoration: none;
+    transition: 0.3s;
+}
+a:hover {
+    text-shadow: 0 0 8px #00c3ff;
+}
+
+/* Footer */
+footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    padding: 15px;
+    font-size: 13px;
+    color: rgba(160, 216, 255, 0.7);
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+    border-top: 1px solid rgba(0, 195, 255, 0.2);
+}
+</style>
+</head>
+
+<body>
+
+<div class="bg-animation"></div>
+
+<!-- REAL LOGO OUTSIDE CONTAINER -->
+<div class="logo-wrapper">
+    <img src="/logo.png" alt="ETIAS TECH Logo"> <!-- PUT YOUR LOGO HERE -->
+    <div class="logo-text">ETIAS API HUB</div>
+</div>
+
+<div class="container">
+
+    <h2>Developer Login</h2>
+
+    <input id="email" class="glass-input" type="email" placeholder="Email">
+
+    <input id="password" class="glass-input" type="password" placeholder="Password">
+
+    <button id="loginBtn" onclick="login()" class="glow-btn">
+        <div class="spinner" id="spinner"></div>
+        <span id="btnText">LOGIN</span>
+    </button>
+
+    <div class="message" id="msg"></div>
+
+    <p>No account? <a href="register.html">Register</a></p>
+
+</div>
+
+<footer>
+    Powered By ETIAS TECH | ©️ 2026 All rights reserved.
+</footer>
+
+<script>
+async function login(){
+    const btn = document.getElementById("loginBtn");
+    const spinner = document.getElementById("spinner");
+    const btnText = document.getElementById("btnText");
+    const msg = document.getElementById("msg");
+    
+    // Show loading
+    btn.disabled = true;
+    spinner.style.display = "block";
+    btnText.innerText = "LOGGING IN...";
+    msg.innerHTML = "";
+
+    try {
+        const res = await fetch("http://localhost:5000/users/login", {
+            method:"POST",
+            headers:{
+                "Content-Type":"application/json"
+            },
+            body:JSON.stringify({
+                email: document.getElementById("email").value,
+                password: document.getElementById("password").value
+            })
+        });
+
+        const data = await res.json();
+
+        if(data.token){
+            localStorage.setItem("token", data.token);
+            localStorage.setItem("apiKey", data.apiKey);
+            window.location = "dashboard.html";
+        }else{
+            msg.innerHTML = data.error;
+        }
+    } catch (err) {
+        msg.innerHTML = "Server error. Try again.";
+    } finally {
+        // Hide loading
+        btn.disabled = false;
+        spinner.style.display = "none";
+        btnText.innerText = "LOGIN";
+    }
+}
+</script>
+
+</body>
+</html>

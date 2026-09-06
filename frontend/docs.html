@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>ETIAS API HUB Docs</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="UTF-8">
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    background:#020210;
+    color:#e0f7ff;
+    font-family:'Poppins',sans-serif;
+    padding:30px;
+    padding-bottom: 100px; /* space for footer */
+    background-image: 
+        linear-gradient(rgba(0, 195, 255, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 195, 255, 0.05) 1px, transparent 1px);
+    background-size: 40px 40px;
+    animation: gridMove 30s linear infinite;
+}
+
+@keyframes gridMove {
+    0% { background-position: 0 0; }
+    100% { background-position: 40px 40px; }
+}
+
+/* Logo */
+.logo{
+    font-family: 'Orbitron', sans-serif;
+    font-size:35px;
+    font-weight:700;
+    background: linear-gradient(90deg, #00c3ff, #0077ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow:0 0 20px rgba(0, 195, 255, 0.5);
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    text-align: center;
+    color: #a0d8ff;
+    margin-bottom: 30px;
+}
+
+/* Glass Cards */
+.card{
+    background: rgba(15, 23, 42, 0.4);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    padding:25px;
+    border-radius:20px;
+    margin:25px auto;
+    max-width: 900px;
+    border: 1px solid rgba(0, 195, 255, 0.2);
+    box-shadow:0 0 20px rgba(0, 195, 255, 0.15);
+    transition: 0.3s;
+}
+.card:hover {
+    box-shadow:0 0 30px rgba(0, 195, 255, 0.3);
+}
+
+h2 {
+    color: #00c3ff;
+    margin-bottom: 15px;
+    font-family: 'Orbitron', sans-serif;
+}
+
+/* Inputs */
+input,select,textarea{
+    width:100%;
+    padding:15px;
+    margin:10px 0;
+    background: rgba(5, 8, 22, 0.6);
+    color:white;
+    border:1px solid rgba(0, 195, 255, 0.4);
+    border-radius:10px;
+    outline: none;
+    transition: 0.3s;
+    backdrop-filter: blur(5px);
+}
+
+input:focus, select:focus, textarea:focus {
+    border:1px solid #00c3ff;
+    box-shadow: 0 0 15px rgba(0, 195, 255, 0.5);
+}
+
+/* Buttons */
+button{
+    background: linear-gradient(90deg, #00c3ff, #0077ff);
+    border:none;
+    padding:15px 25px;
+    border-radius:12px;
+    font-weight:600;
+    cursor:pointer;
+    color: #fff;
+    font-family: 'Orbitron', sans-serif;
+    letter-spacing: 1px;
+    box-shadow: 0 0 15px rgba(0, 195, 255, 0.4);
+    transition: 0.3s;
+}
+button:hover{
+    transform: translateY(-2px);
+    box-shadow: 0 0 25px rgba(0, 195, 255, 0.7);
+}
+
+code{
+    color:#00ff99;
+    background: rgba(0,0,0,0.4);
+    padding: 2px 6px;
+    border-radius: 5px;
+}
+
+pre{
+    background: rgba(0, 0, 0, 0.6);
+    padding:20px;
+    border-radius:15px;
+    overflow:auto;
+    border: 1px solid rgba(0, 195, 255, 0.2);
+}
+
+.endpoint{
+    color:#00c3ff;
+    font-size:20px;
+    font-family: 'Orbitron', sans-serif;
+}
+
+/* Footer Nav */
+footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(5, 8, 22, 0.7);
+    backdrop-filter: blur(15px);
+    border-top: 1px solid rgba(0, 195, 255, 0.3);
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    padding: 15px;
+    z-index: 100;
+}
+
+.nav-btn {
+    background: transparent;
+    border: 1px solid rgba(0, 195, 255, 0.4);
+    color: #00c3ff;
+    padding: 10px 20px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: 0.3s;
+    font-family: 'Poppins', sans-serif;
+}
+
+.nav-btn:hover {
+    background: rgba(0, 195, 255, 0.1);
+    box-shadow: 0 0 15px rgba(0, 195, 255, 0.4);
+    color: #fff;
+}
+
+.footer-text {
+    position: absolute;
+    right: 30px;
+    font-size: 12px;
+    color: rgba(160, 216, 255, 0.6);
+    align-self: center;
+}
+
+@media(max-width: 768px) {
+    .footer-text { display: none; }
+    footer { gap: 10px; }
+    .nav-btn { padding: 8px 12px; font-size: 14px; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="logo">ETIAS API HUB</div>
+<p class="subtitle">Developer Documentation</p>
+
+<div class="card">
+    <h2>Authentication</h2>
+    <p>All requests require your API key.</p>
+    <code>X-API-Key: ETIAS-XXXXXXXX</code>
+</div>
+
+<div class="card">
+    <h2>Available APIs</h2>
+    <code class="endpoint">GET /movies/trending</code>
+    <p>Returns trending movies.</p>
+
+    <code class="endpoint">POST /ai/chat</code>
+    <p>AI assistant endpoint.</p>
+
+    <code class="endpoint">GET /movies/search?q=</code>
+    <p>Search movies.</p>
+</div>
+
+<div class="card">
+    <h2>Live API Tester</h2>
+    
+    <label>Base URL</label>
+    <input id="base" value="http://localhost:5000">
+    
+    <label>API Key</label>
+    <input id="key" placeholder="ETIAS-XXXXXX">
+
+    <label>Endpoint</label>
+    <select id="endpoint">
+        <option value="/movies/trending">/movies/trending</option>
+        <option value="/movies/search?q=action">/movies/search?q=action</option>
+        <option value="/ai/chat">/ai/chat</option>
+    </select>
+
+    <button onclick="testAPI()">Send Request</button>
+
+    <h3>Response</h3>
+    <pre id="response">Waiting...</pre>
+</div>
+
+<div class="card">
+    <h2>Example Request</h2>
+    <pre>curl https://api.etias.com/movies/trending \
+-H "X-API-Key: ETIAS-XXXX"</pre>
+</div>
+
+<!-- FOOTER NAV -->
+<footer>
+    <a href="dashboard.html" class="nav-btn">Dashboard</a>
+    <a href="playground.html" class="nav-btn">Playground</a>
+    <a href="pricing.html" class="nav-btn">Premium</a>
+    <span class="footer-text">Powered By ETIAS TECH | ©️ 2026</span>
+</footer>
+
+<script>
+async function testAPI(){
+    const base = document.getElementById("base").value;
+    const key = document.getElementById("key").value;
+    const endpoint = document.getElementById("endpoint").value;
+    const response = document.getElementById("response");
+
+    const url = base + endpoint;
+    response.innerHTML = "Loading...";
+
+    try{
+        const res = await fetch(url, {
+            headers:{
+                "X-API-Key": key
+            }
+        });
+
+        const data = await res.json();
+        response.innerHTML = JSON.stringify(data, null, 2);
+    }
+    catch(err){
+        response.innerHTML = "Error: " + err.message;
+    }
+}
+</script>
+
+</body>
+</html>

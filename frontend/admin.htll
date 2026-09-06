@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>ETIAS API HUB Admin</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="UTF-8">
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&display=swap');
+
+* {
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    background:#020210;
+    color:#e0f7ff;
+    font-family:'Poppins', sans-serif;
+    background-image: 
+        linear-gradient(rgba(0, 195, 255, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 195, 255, 0.05) 1px, transparent 1px);
+    background-size: 40px 40px;
+    animation: gridMove 30s linear infinite;
+    min-height: 100vh;
+}
+
+@keyframes gridMove {
+    0% { background-position: 0 0; }
+    100% { background-position: 40px 40px; }
+}
+
+.container{
+    max-width:1300px;
+    margin:auto;
+    padding:30px 20px 60px;
+}
+
+/* TOP NAV */
+.topnav {
+    background: rgba(5, 8, 22, 0.8);
+    backdrop-filter: blur(15px);
+    border-bottom: 1px solid rgba(0, 195, 255, 0.2);
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+.nav-left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+.nav-logo {
+    width: 45px;
+    height: 45px;
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(0, 195, 255, 0.5);
+}
+.logo{
+    font-family: 'Orbitron', sans-serif;
+    font-size:22px;
+    font-weight:700;
+    background:linear-gradient(90deg,#00c3ff,#0077ff);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+}
+.admin-name {
+    color: #a0d8ff;
+    font-size: 13px;
+}
+.admin-name b {
+    color: #00c3ff;
+}
+
+.btn-danger{
+    background: linear-gradient(90deg, #ff3366, #ff0066);
+    border:0;
+    padding:10px 20px;
+    border-radius:12px;
+    cursor:pointer;
+    font-weight:600;
+    color: white;
+    font-family: 'Orbitron', sans-serif;
+    box-shadow: 0 0 15px rgba(255, 51, 102, 0.4);
+    transition: 0.3s;
+}
+.btn-danger:hover { transform: translateY(-2px); }
+
+/* STATS GRID */
+.section-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 24px;
+    margin: 30px 0 20px;
+    color: #00c3ff;
+    text-align: center;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:25px;
+    margin-bottom: 30px;
+}
+
+.card{
+    background: rgba(15, 23, 42, 0.4);
+    backdrop-filter: blur(15px);
+    padding:25px;
+    border-radius:20px;
+    border: 1px solid rgba(0, 195, 255, 0.2);
+    box-shadow:0 0 20px rgba(0, 195, 255, 0.15);
+    transition: 0.3s;
+}
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow:0 0 30px rgba(0, 195, 255, 0.3);
+}
+
+.card h2{
+    color:#a0d8ff;
+    font-family: 'Poppins', sans-serif;
+    margin-bottom: 12px;
+    font-size: 16px;
+    font-weight: 400;
+}
+
+.value{
+    font-size:40px;
+    font-weight:bold;
+    font-family: 'Orbitron', sans-serif;
+    background:linear-gradient(90deg,#00c3ff,#0077ff);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+}
+
+/* TABLE CARDS */
+.table-card {
+    margin-bottom: 30px;
+}
+
+.table-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+.table-header h2 {
+    font-family: 'Orbitron', sans-serif;
+    color: #00c3ff;
+    font-size: 20px;
+}
+
+/* BUTTONS */
+.btn {
+    border:0;
+    padding:10px 18px;
+    border-radius:10px;
+    cursor:pointer;
+    font-weight:600;
+    margin:4px;
+    transition: 0.3s;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+}
+
+.approve{background: linear-gradient(90deg, #00ff99, #00cc77); color: #020210;}
+.reject,.danger{background: linear-gradient(90deg, #ff3366, #ff0066); color:white;}
+.plan{background: linear-gradient(90deg, #00c3ff, #0077ff); color:white;}
+.btn:hover { transform: translateY(-2px); box-shadow: 0 0 15px rgba(0, 195, 255, 0.5); }
+
+/* TABLE */
+.table-wrap {
+    overflow-x: auto;
+    border-radius: 15px;
+}
+table{
+    width:100%;
+    border-collapse:collapse;
+    min-width: 700px;
+}
+
+th,td{
+    padding:16px;
+    border-bottom:1px solid rgba(0, 195, 255, 0.15);
+    text-align:left;
+}
+th {
+    color: #00c3ff;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 14px;
+    background: rgba(0, 195, 255, 0.05);
+}
+tr:hover {
+    background: rgba(0, 195, 255, 0.05);
+}
+
+img{
+    width:100px;
+    border-radius:10px;
+    border: 1px solid rgba(0, 195, 255, 0.3);
+}
+
+input,select{
+    padding:12px 15px;
+    background: rgba(5, 8, 22, 0.6);
+    color:white;
+    border:1px solid rgba(0, 195, 255, 0.4);
+    border-radius:10px;
+    outline: none;
+    font-family: 'Poppins', sans-serif;
+    min-width: 200px;
+}
+input:focus, select:focus { border:1px solid #00c3ff; box-shadow: 0 0 15px rgba(0, 195, 255, 0.5); }
+
+/* DAYS LEFT COLORS */
+.days-green { color: #00ff99; font-weight: 700; }
+.days-red { color: #ff3366; font-weight: 700; }
+
+/* SEARCH BAR */
+.search-bar {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+/* RESPONSIVE */
+@media(max-width: 768px) {
+    .topnav { padding: 15px 20px; }
+    .logo { font-size: 18px; }
+    .table-header { flex-direction: column; align-items: flex-start; }
+    .search-bar { width: 100%; flex-direction: column; }
+    input, select { width: 100%; }
+}
+</style>
+</head>
+
+<body>
+
+<!-- TOP NAV -->
+<div class="topnav">
+    <div class="nav-left">
+        <img src="https://placehold.co/45x45/00c3ff/020210?text=E" class="nav-logo" alt="Logo">
+        <div>
+            <div class="logo">ETIAS ADMIN HUB</div>
+            <div class="admin-name">Logged in as: <b>Professor X</b></div>
+        </div>
+    </div>
+    <button onclick="logout()" class="btn-danger">Logout</button>
+</div>
+
+<div class="container">
+
+    <h2 class="section-title">Dashboard Overview</h2>
+    <div class="grid">
+        <div class="card">
+            <h2>Total Users</h2>
+            <div id="users" class="value">0</div>
+        </div>
+        <div class="card">
+            <h2>Active Users</h2>
+            <div id="active" class="value">0</div>
+        </div>
+        <div class="card">
+            <h2>Pending Payments</h2>
+            <div id="pending" class="value">0</div>
+        </div>
+    </div>
+
+    <div class="card table-card">
+        <div class="table-header">
+            <h2>User Management</h2>
+            <div class="search-bar">
+                <input type="text" id="searchInput" placeholder="Search name, email, plan...">
+                <select id="planFilter">
+                    <option value="">All Plans</option>
+                    <option value="free">Free</option>
+                    <option value="developer">Developer</option>
+                    <option value="pro">Pro</option>
+                </select>
+                <button class="btn plan" onclick="filterUsers()">Search</button>
+            </div>
+        </div>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Plan</th>
+                        <th>Days Left</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="userTable"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card table-card">
+        <div class="table-header">
+            <h2>EcoCash Payments</h2>
+        </div>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>User</th>
+                        <th>Plan</th>
+                        <th>Amount</th>
+                        <th>Proof</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="paymentTable"></tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+<script>
+const API_URL = "http://localhost:5000";
+const token = localStorage.getItem("token");
+
+if(!token){ location="login.html"; }
+
+const headers = { Authorization: "Bearer "+token };
+
+let allUsers = [];
+
+async function loadStats(){
+    const res = await fetch(API_URL+"/admin/stats", { headers });
+    const data = await res.json();
+    document.getElementById("users").innerHTML = data.totalUsers;
+    document.getElementById("active").innerHTML = data.activeUsers;
+    document.getElementById("pending").innerHTML = data.pendingPayments;
+}
+
+async function loadUsers(){
+    const res = await fetch(API_URL+"/admin/users", { headers });
+    const data = await res.json();
+    allUsers = data.users;
+    renderUsers(allUsers);
+}
+
+function renderUsers(users){
+    let html = "";
+    users.forEach(user => {
+        const days = user.daysLeft || 0;
+        const daysClass = days >= 8 ? "days-green" : "days-red";
+        
+        html += `
+        <tr>
+            <td>${user.name}</td>
+            <td>${user.email}</td>
+            <td>${user.plan}</td>
+            <td class="${daysClass}">${days} days</td>
+            <td>
+                <button class="btn plan" onclick="changePlan('${user._id}','developer')">Developer</button>
+                <button class="btn plan" onclick="changePlan('${user._id}','pro')">Pro</button>
+                <button class="btn danger" onclick="ban('${user._id}')">Ban</button>
+            </td>
+        </tr>`;
+    });
+    document.getElementById("userTable").innerHTML = html;
+}
+
+function filterUsers() {
+    const search = document.getElementById("searchInput").value.toLowerCase();
+    const plan = document.getElementById("planFilter").value;
+    
+    const filtered = allUsers.filter(u => {
+        const matchSearch = u.name.toLowerCase().includes(search) || u.email.toLowerCase().includes(search) || u.plan.toLowerCase().includes(search);
+        const matchPlan = plan === "" || u.plan === plan;
+        return matchSearch && matchPlan;
+    });
+    renderUsers(filtered);
+}
+
+async function changePlan(id,plan){
+    await fetch(API_URL+"/admin/users/"+id+"/plan", {
+        method:"PUT",
+        headers:{...headers, "Content-Type":"application/json"},
+        body:JSON.stringify({plan})
+    });
+    loadUsers();
+}
+
+async function ban(id){
+    await fetch(API_URL+"/admin/users/"+id+"/ban", { method:"POST", headers });
+    loadUsers();
+}
+
+async function loadPayments(){
+    const res = await fetch(API_URL+"/admin/payments", { headers });
+    const data = await res.json();
+    let html = "";
+    data.payments.forEach(payment => {
+        html += `
+        <tr>
+            <td>${payment.user?.email || "Unknown"}</td>
+            <td>${payment.plan}</td>
+            <td>$${payment.amount}</td>
+            <td><img src="${API_URL}${payment.proofImage}" alt="proof"></td>
+            <td>${payment.status}</td>
+            <td>
+                <button class="btn approve" onclick="approvePayment('${payment._id}')">Approve</button>
+                <button class="btn reject" onclick="rejectPayment('${payment._id}')">Reject</button>
+            </td>
+        </tr>`;
+    });
+    document.getElementById("paymentTable").innerHTML = html;
+}
+
+async function approvePayment(id){
+    await fetch(API_URL+"/admin/payments/"+id+"/approve", { method:"POST", headers });
+    alert("Payment approved");
+    loadPayments();
+    loadStats();
+}
+
+async function rejectPayment(id){
+    await fetch(API_URL+"/admin/payments/"+id+"/reject", { method:"POST", headers });
+    alert("Payment rejected");
+    loadPayments();
+}
+
+function logout(){
+    localStorage.clear();
+    location="login.html";
+}
+
+document.getElementById("searchInput").addEventListener("keypress", e => {
+    if(e.key === "Enter") filterUsers();
+});
+
+loadStats();
+loadUsers();
+loadPayments();
+</script>
+</body>
+</html>

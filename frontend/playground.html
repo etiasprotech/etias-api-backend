@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>ETIAS API HUB Playground</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="UTF-8">
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&family=Fira+Code:wght@400;500&display=swap');
+
+* {
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    padding:30px;
+    padding-bottom: 100px;
+    background:#020210;
+    color:#e0f7ff;
+    font-family:'Poppins', sans-serif;
+    background-image: 
+        linear-gradient(rgba(0, 195, 255, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 195, 255, 0.05) 1px, transparent 1px);
+    background-size: 40px 40px;
+    animation: gridMove 30s linear infinite;
+}
+
+@keyframes gridMove {
+    0% { background-position: 0 0; }
+    100% { background-position: 40px 40px; }
+}
+
+.container{
+    max-width:1100px;
+    margin:auto;
+}
+
+/* Logo */
+.logo{
+    font-family: 'Orbitron', sans-serif;
+    font-size:35px;
+    font-weight:700;
+    background: linear-gradient(90deg, #00c3ff, #0077ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow:0 0 20px rgba(0, 195, 255, 0.5);
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    text-align: center;
+    color: #a0d8ff;
+    margin-bottom: 30px;
+}
+
+/* Glass Cards */
+.card{
+    background: rgba(15, 23, 42, 0.4);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    padding:25px;
+    margin-top:20px;
+    border-radius:20px;
+    border: 1px solid rgba(0, 195, 255, 0.2);
+    box-shadow:0 0 20px rgba(0, 195, 255, 0.15);
+}
+
+h2{
+    color:#00c3ff;
+    font-family: 'Orbitron', sans-serif;
+    margin-bottom: 15px;
+}
+
+label {
+    color: #a0d8ff;
+    font-size: 14px;
+    display: block;
+    margin-top: 10px;
+}
+
+/* Inputs */
+input,select,textarea{
+    width:100%;
+    padding:15px;
+    margin-top:10px;
+    background: rgba(5, 8, 22, 0.6);
+    color:white;
+    border:1px solid rgba(0, 195, 255, 0.4);
+    border-radius:10px;
+    outline: none;
+    transition: 0.3s;
+    backdrop-filter: blur(5px);
+    font-family: 'Poppins', sans-serif;
+}
+input:focus, select:focus, textarea:focus {
+    border:1px solid #00c3ff;
+    box-shadow: 0 0 15px rgba(0, 195, 255, 0.5);
+}
+
+textarea{
+    height:150px;
+    font-family: 'Fira Code', monospace;
+    font-size: 14px;
+    resize: vertical;
+}
+
+/* Buttons */
+.button-group {
+    display: flex;
+    gap: 12px;
+    margin: 15px 0; /* GAP BETWEEN BUTTON AND BOX */
+}
+
+button{
+    background: linear-gradient(90deg, #00c3ff, #0077ff);
+    border:0;
+    padding:12px 20px;
+    border-radius:12px;
+    font-weight:600;
+    cursor:pointer;
+    color: #fff;
+    font-family: 'Orbitron', sans-serif;
+    letter-spacing: 1px;
+    box-shadow: 0 0 15px rgba(0, 195, 255, 0.4);
+    transition: 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+button:hover{
+    transform: translateY(-2px);
+    box-shadow: 0 0 25px rgba(0, 195, 255, 0.7);
+}
+
+.btn-secondary {
+    background: transparent;
+    border: 1px solid rgba(0, 195, 255, 0.4);
+    color: #00c3ff;
+}
+.btn-secondary:hover {
+    background: rgba(0, 195, 255, 0.1);
+}
+
+/* Response Box */
+pre{
+    background: rgba(0, 0, 0, 0.6);
+    padding:20px;
+    border-radius:15px;
+    overflow:auto;
+    color:#00ff99;
+    border: 1px solid rgba(0, 255, 153, 0.3);
+    font-family: 'Fira Code', monospace;
+    font-size: 14px;
+    min-height: 150px;
+}
+
+/* Footer Nav */
+footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(5, 8, 22, 0.7);
+    backdrop-filter: blur(15px);
+    border-top: 1px solid rgba(0, 195, 255, 0.3);
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    padding: 15px;
+    z-index: 100;
+}
+
+.nav-btn {
+    background: transparent;
+    border: 1px solid rgba(0, 195, 255, 0.4);
+    color: #00c3ff;
+    padding: 10px 20px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: 0.3s;
+    font-family: 'Poppins', sans-serif;
+}
+
+.nav-btn:hover {
+    background: rgba(0, 195, 255, 0.1);
+    box-shadow: 0 0 15px rgba(0, 195, 255, 0.4);
+    color: #fff;
+}
+
+.footer-text {
+    position: absolute;
+    right: 30px;
+    font-size: 12px;
+    color: rgba(160, 216, 255, 0.6);
+    align-self: center;
+}
+
+@media(max-width: 768px) {
+    .footer-text { display: none; }
+    footer { gap: 10px; }
+    .nav-btn { padding: 8px 12px; font-size: 14px; }
+    .button-group { flex-direction: column; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="logo">ETIAS API HUB</div>
+    <p class="subtitle">API Playground - Test your endpoints live</p>
+
+    <div class="card">
+        <h2>Authentication</h2>
+        <label>API Key</label>
+        <input id="key" placeholder="ETIAS-XXXXXXXX">
+    </div>
+
+    <div class="card">
+        <h2>Request</h2>
+        <label>Endpoint</label>
+        <select id="endpoint">
+            <option value="/movies/trending">GET /movies/trending</option>
+            <option value="/movies/search?q=action">GET /movies/search?q=action</option>
+            <option value="/ai/chat">POST /ai/chat</option>
+        </select>
+
+        <label>Method</label>
+        <select id="method">
+            <option>GET</option>
+            <option>POST</option>
+        </select>
+
+        <label>JSON Body</label>
+        <textarea id="body">{
+"message":"hello"
+}</textarea>
+
+        <button onclick="sendRequest()">Send Request</button>
+    </div>
+
+    <div class="card">
+        <h2>Response</h2>
+        
+        <div class="button-group">
+            <button onclick="copyResponse()" id="copyBtn">
+                <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+                <span id="copyText">Copy Response</span>
+            </button>
+            <button class="btn-secondary" onclick="clearResponse()">Clear</button>
+        </div>
+
+        <pre id="response">Waiting...</pre>
+    </div>
+
+</div>
+
+<!-- FOOTER NAV -->
+<footer>
+    <a href="dashboard.html" class="nav-btn">Dashboard</a>
+    <a href="docs.html" class="nav-btn">Docs</a>
+    <a href="pricing.html" class="nav-btn">Pricing</a>
+    <span class="footer-text">Powered By ETIAS TECH | ©️ 2026</span>
+</footer>
+
+<script>
+const API_URL = "http://localhost:5000";
+
+async function sendRequest(){
+    document.getElementById("response").innerHTML = "Loading...";
+
+    const key = document.getElementById("key").value;
+    const endpoint = document.getElementById("endpoint").value;
+    const method = document.getElementById("method").value;
+    const body = document.getElementById("body").value;
+
+    try{
+        const options = {
+            method: method,
+            headers: {
+                "Content-Type": "application/json",
+                "X-API-Key": key
+            }
+        };
+
+        if(method === "POST"){
+            options.body = body;
+        }
+
+        const res = await fetch(API_URL + endpoint, options);
+        const data = await res.json();
+
+        document.getElementById("response").innerHTML = 
+            "Status: " + res.status + "\n\n" + JSON.stringify(data, null, 2);
+
+    } catch(error){
+        document.getElementById("response").innerHTML = "Error: " + error.message;
+    }
+}
+
+function copyResponse(){
+    const copyBtn = document.getElementById("copyBtn");
+    const copyText = document.getElementById("copyText");
+    
+    navigator.clipboard.writeText(document.getElementById("response").innerText);
+    
+    // Feedback
+    copyText.innerText = "Copied!";
+    copyBtn.style.background = "linear-gradient(90deg, #00ff99, #00c3ff)";
+    
+    setTimeout(() => {
+        copyText.innerText = "Copy Response";
+        copyBtn.style.background = "linear-gradient(90deg, #00c3ff, #0077ff)";
+    }, 2000);
+}
+
+function clearResponse() {
+    document.getElementById("response").innerHTML = "Waiting...";
+}
+
+// Auto-fill API key from localStorage
+document.getElementById("key").value = localStorage.getItem("apiKey") || "";
+</script>
+
+</body>
+</html>

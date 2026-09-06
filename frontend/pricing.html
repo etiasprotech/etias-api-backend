@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>ETIAS API HUB Pricing</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="UTF-8">
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&display=swap');
+
+* {
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    padding:30px;
+    padding-bottom: 100px;
+    background:#020210;
+    color:#e0f7ff;
+    font-family:'Poppins', sans-serif;
+    background-image: 
+        linear-gradient(rgba(0, 195, 255, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 195, 255, 0.05) 1px, transparent 1px);
+    background-size: 40px 40px;
+    animation: gridMove 30s linear infinite;
+}
+
+@keyframes gridMove {
+    0% { background-position: 0 0; }
+    100% { background-position: 40px 40px; }
+}
+
+.container{
+    max-width:1200px;
+    margin:auto;
+    text-align: center;
+}
+
+/* Logo */
+.logo{
+    font-family: 'Orbitron', sans-serif;
+    font-size:36px;
+    font-weight:700;
+    background: linear-gradient(90deg, #00c3ff, #0077ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow:0 0 20px rgba(0, 195, 255, 0.5);
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    color: #a0d8ff;
+    margin-bottom: 40px;
+    font-size: 18px;
+}
+
+/* Grid */
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(270px,1fr));
+    gap:25px;
+    margin-top:40px;
+}
+
+/* Glass Cards */
+.card{
+    background: rgba(15, 23, 42, 0.4);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    padding:30px;
+    border-radius:20px;
+    text-align:center;
+    border: 1px solid rgba(0, 195, 255, 0.2);
+    box-shadow:0 0 20px rgba(0, 195, 255, 0.15);
+    transition: all 0.3s ease;
+    position: relative;
+}
+.card:hover{
+    transform: translateY(-8px);
+    box-shadow:0 0 35px rgba(0, 195, 255, 0.4);
+}
+
+h2{
+    color:#00c3ff;
+    font-family: 'Orbitron', sans-serif;
+    margin-bottom: 15px;
+}
+
+.price{
+    font-size:40px;
+    font-weight:700;
+    background: linear-gradient(90deg, #00c3ff, #00ff99);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin: 15px 0;
+}
+
+.price span {
+    font-size: 16px;
+    color: #a0d8ff;
+}
+
+ul{
+    text-align:left;
+    line-height:2;
+    list-style: none;
+    padding: 0;
+    margin: 25px 0;
+}
+ul li {
+    padding-left: 25px;
+    position: relative;
+}
+ul li:before {
+    content: "✓";
+    color: #00ff99;
+    position: absolute;
+    left: 0;
+}
+
+/* Buttons */
+button{
+    background: linear-gradient(90deg, #00c3ff, #0077ff);
+    border:0;
+    padding:15px 30px;
+    border-radius:12px;
+    font-weight:600;
+    cursor:pointer;
+    color: #fff;
+    font-family: 'Orbitron', sans-serif;
+    letter-spacing: 1px;
+    box-shadow: 0 0 15px rgba(0, 195, 255, 0.4);
+    transition: 0.3s;
+    width: 100%;
+}
+button:hover{
+    transform: translateY(-2px);
+    box-shadow: 0 0 25px rgba(0, 195, 255, 0.7);
+}
+
+.active{
+    border:2px solid #00ff99;
+    box-shadow: 0 0 30px rgba(0, 255, 153, 0.4);
+}
+.active button {
+    background: linear-gradient(90deg, #00ff99, #00c3ff);
+}
+
+.popular-badge {
+    position: absolute;
+    top: -12px;
+    right: 20px;
+    background: linear-gradient(90deg, #00ff99, #00c3ff);
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #020210;
+}
+
+/* Footer Nav */
+footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(5, 8, 22, 0.7);
+    backdrop-filter: blur(15px);
+    border-top: 1px solid rgba(0, 195, 255, 0.3);
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    padding: 15px;
+    z-index: 100;
+}
+
+.nav-btn {
+    background: transparent;
+    border: 1px solid rgba(0, 195, 255, 0.4);
+    color: #00c3ff;
+    padding: 10px 20px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: 0.3s;
+    font-family: 'Poppins', sans-serif;
+}
+
+.nav-btn:hover {
+    background: rgba(0, 195, 255, 0.1);
+    box-shadow: 0 0 15px rgba(0, 195, 255, 0.4);
+    color: #fff;
+}
+
+.footer-text {
+    position: absolute;
+    right: 30px;
+    font-size: 12px;
+    color: rgba(160, 216, 255, 0.6);
+    align-self: center;
+}
+
+@media(max-width: 768px) {
+    .footer-text { display: none; }
+    footer { gap: 10px; }
+    .nav-btn { padding: 8px 12px; font-size: 14px; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="logo">ETIAS API HUB</div>
+    <p class="subtitle">Choose your API plan</p>
+
+    <div class="grid">
+
+        <div class="card active">
+            <h2>FREE</h2>
+            <div class="price">$0<span>/month</span></div>
+            <ul>
+                <li>100 API requests/month</li>
+                <li>Basic API access</li>
+                <li>Community support</li>
+            </ul>
+            <button onclick="upgrade('free')">Current Plan</button>
+        </div>
+
+        <div class="card">
+            <h2>DEVELOPER</h2>
+            <div class="price">$5<span>/month</span></div>
+            <ul>
+                <li>5,000 API requests/month</li>
+                <li>Movies API</li>
+                <li>AI API access</li>
+                <li>Email support</li>
+            </ul>
+            <button onclick="upgrade('developer')">Upgrade</button>
+        </div>
+
+        <div class="card">
+            <div class="popular-badge">POPULAR</div>
+            <h2>PRO</h2>
+            <div class="price">$15<span>/month</span></div>
+            <ul>
+                <li>50,000 API requests/month</li>
+                <li>Priority access</li>
+                <li>Advanced analytics</li>
+                <li>Priority support</li>
+            </ul>
+            <button onclick="upgrade('pro')">Upgrade</button>
+        </div>
+
+        <div class="card">
+            <h2>ENTERPRISE</h2>
+            <div class="price">$20<span>/month</span></div> <!-- CHANGED FROM CUSTOM -->
+            <ul>
+                <li>Unlimited requests</li>
+                <li>Dedicated API</li>
+                <li>Custom solutions</li>
+                <li>24/7 support</li>
+            </ul>
+            <button onclick="upgrade('enterprise')">Get Started</button>
+        </div>
+
+    </div>
+</div>
+
+<!-- FOOTER NAV -->
+<footer>
+    <a href="dashboard.html" class="nav-btn">Dashboard</a>
+    <a href="docs.html" class="nav-btn">Docs</a>
+    <a href="playground.html" class="nav-btn">Playground</a>
+    <span class="footer-text">Powered By ETIAS TECH | ©️ 2026</span>
+</footer>
+
+<script>
+function upgrade(plan){
+    if(plan==="free"){
+        return;
+    }
+    localStorage.setItem("selectedPlan", plan);
+    location="payment.html";
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>ETIAS API Console</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&family=Fira+Code:wght@400;500&display=swap');
+
+* {
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    padding:30px;
+    padding-bottom: 100px;
+    background:#020210;
+    color:#e0f7ff;
+    font-family:'Poppins', sans-serif;
+    background-image:
+        linear-gradient(rgba(0, 195, 255, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 195, 255, 0.05) 1px, transparent 1px);
+    background-size: 40px 40px;
+    animation: gridMove 30s linear infinite;
+}
+
+@keyframes gridMove {
+    0% { background-position: 0 0; }
+    100% { background-position: 40px 40px; }
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+}
+
+/* Logo */
+.logo{
+    font-family: 'Orbitron', sans-serif;
+    font-size:32px;
+    font-weight:700;
+    background: linear-gradient(90deg, #00c3ff, #0077ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow:0 0 20px rgba(0, 195, 255, 0.5);
+    text-align: center;
+    margin-bottom:30px;
+}
+
+/* Glass Box */
+.box{
+    background: rgba(15, 23, 42, 0.4);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    padding:30px;
+    border-radius:20px;
+    margin-bottom:25px;
+    border: 1px solid rgba(0, 195, 255, 0.2);
+    box-shadow:0 0 20px rgba(0, 195, 255, 0.15);
+}
+
+h2{
+    color:#00c3ff;
+    font-family: 'Orbitron', sans-serif;
+    margin-bottom: 15px;
+    font-size: 20px;
+}
+
+textarea,input{
+    width:100%;
+    padding:15px;
+    background: rgba(5, 8, 22, 0.6);
+    color:white;
+    border:1px solid rgba(0, 195, 255, 0.4);
+    border-radius:10px;
+    margin:10px 0;
+    outline: none;
+    transition: 0.3s;
+    font-family: 'Poppins', sans-serif;
+    backdrop-filter: blur(5px);
+}
+
+input[readonly] {
+    background: rgba(0, 195, 255, 0.1);
+    color: #00c3ff;
+    font-family: 'Fira Code', monospace;
+    cursor: not-allowed;
+}
+
+textarea:focus,input:focus{
+    border:1px solid #00c3ff;
+    box-shadow: 0 0 15px rgba(0, 195, 255, 0.5);
+}
+
+textarea {
+    min-height: 120px;
+    resize: vertical;
+    font-family: 'Fira Code', monospace;
+}
+
+button{
+    padding:15px 30px;
+    border-radius:12px;
+    border:none;
+    background: linear-gradient(90deg, #00c3ff, #0077ff);
+    font-weight:600;
+    cursor:pointer;
+    color: #fff;
+    font-family: 'Orbitron', sans-serif;
+    letter-spacing: 1px;
+    box-shadow: 0 0 15px rgba(0, 195, 255, 0.4);
+    transition: 0.3s;
+}
+
+button:hover{
+    transform: translateY(-2px);
+    box-shadow: 0 0 25px rgba(0, 195, 255, 0.7);
+}
+
+pre{
+    background: rgba(0, 0, 0, 0.6);
+    padding:20px;
+    border-radius:15px;
+    overflow:auto;
+    color:#00ff99;
+    border: 1px solid rgba(0, 255, 153, 0.3);
+    font-family: 'Fira Code', monospace;
+    font-size: 14px;
+    margin-top: 15px;
+    min-height: 120px;
+}
+
+/* Footer Nav */
+footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(5, 8, 22, 0.7);
+    backdrop-filter: blur(15px);
+    border-top: 1px solid rgba(0, 195, 255, 0.3);
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    padding: 15px;
+    z-index: 100;
+}
+
+.nav-btn {
+    background: transparent;
+    border: 1px solid rgba(0, 195, 255, 0.4);
+    color: #00c3ff;
+    padding: 10px 20px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: 0.3s;
+    font-family: 'Poppins', sans-serif;
+}
+
+.nav-btn:hover {
+    background: rgba(0, 195, 255, 0.1);
+    box-shadow: 0 0 15px rgba(0, 195, 255, 0.4);
+    color: #fff;
+}
+
+.footer-text {
+    position: absolute;
+    right: 30px;
+    font-size: 12px;
+    color: rgba(160, 216, 255, 0.6);
+    align-self: center;
+}
+
+@media(max-width: 768px) {
+   .footer-text { display: none; }
+    footer { gap: 10px; }
+   .nav-btn { padding: 8px 12px; font-size: 14px; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="logo">ETIAS API CONSOLE</div>
+
+    <div class="box">
+        <h2>API KEY</h2>
+        <input id="key" readonly>
+    </div>
+
+    <div class="box">
+        <h2>🎬 Movie API Test</h2>
+        <input id="movie" placeholder="Search movie: e.g. Batman">
+        <button onclick="movieSearch()">SEND REQUEST</button>
+        <pre id="movieResult">Waiting...</pre>
+    </div>
+
+    <div class="box">
+        <h2>🤖 AI API Test</h2>
+        <textarea id="prompt" placeholder="Ask AI anything..."></textarea>
+        <button onclick="askAI()">SEND REQUEST</button>
+        <pre id="aiResult">Waiting...</pre>
+    </div>
+
+</div>
+
+<!-- FOOTER NAV -->
+<footer>
+    <a href="dashboard.html" class="nav-btn">Dashboard</a>
+    <a href="playground.html" class="nav-btn">Playground</a>
+    <a href="docs.html" class="nav-btn">Docs</a>
+    <span class="footer-text">Powered By ETIAS TECH | ©️ 2026</span>
+</footer>
+
+<script>
+const API = "http://localhost:5000";
+const apiKey = localStorage.getItem("apiKey");
+
+document.getElementById("key").value = apiKey || "No API Key";
+
+async function movieSearch(){
+    const q = document.getElementById("movie").value;
+    if(!q) return alert("Enter a movie name");
+
+    document.getElementById("movieResult").textContent = "Loading...";
+
+    try {
+        const res = await fetch(API+"/movies/search?q="+encodeURIComponent(q), {
+            headers:{ "x-api-key": apiKey }
+        });
+        const data = await res.json();
+        document.getElementById("movieResult").textContent = JSON.stringify(data, null, 2);
+    } catch(err) {
+        document.getElementById("movieResult").textContent = "Error: " + err.message;
+    }
+}
+
+async function askAI(){
+    const message = document.getElementById("prompt").value;
+    if(!message) return alert("Enter a prompt");
+
+    document.getElementById("aiResult").textContent = "Loading...";
+
+    try {
+        const res = await fetch(API+"/ai/chat", {
+            method:"POST",
+            headers:{
+                "Content-Type":"application/json",
+                "x-api-key": apiKey
+            },
+            body:JSON.stringify({ message })
+        });
+        const data = await res.json();
+        document.getElementById("aiResult").textContent = JSON.stringify(data, null, 2);
+    } catch(err) {
+        document.getElementById("aiResult").textContent = "Error: " + err.message;
+    }
+}
+
+// Auto search on Enter
+document.getElementById("movie").addEventListener("keypress", e => {
+    if(e.key === "Enter") movieSearch();
+});
+</script>
+
+</body>
+</html>
