@@ -9,7 +9,10 @@ const helmet = require("helmet");
 const rateLimit = require("express-rate-limit");
 
 const path = require("path");
-
+const cors = require('cors')
+app.use(cors({ 
+  origin: ["https://etias-frontend.onrender.com", "http://localhost:5500"] 
+}))
 
 
 const app = express();
